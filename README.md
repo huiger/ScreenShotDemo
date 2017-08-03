@@ -483,4 +483,4 @@ private void stopScreenShotListen() {
 
 至此APP内监听截屏操作就完成了，我们需要在baseActivity中执行监听并执行相应操作，不需要写更多代码。
 
-## [源码地址>>](http://note.youdao.com/)
+## [项目地址](https://github.com/huiger/ScreenShotDemo)
