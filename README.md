@@ -4,7 +4,7 @@ Android截屏功能是一个常用的功能，可以方便的用来分享或者�
 ## [项目地址](https://github.com/huiger/ScreenShotDemo)
 
 ## 测试截图：
-![image](.img/ScreenShot.gif)
+![image](./img/ScreenShot.gif)
 
 ## 截屏原理
 Android系统并没有提供截屏通知相关的API，需要我们自己利用系统能提供的相关特性变通实现。Android系统有一个媒体数据库，每拍一张照片，或使用系统截屏截取一张图片，都会把这张图片的详细信息加入到这个媒体数据库，并发出内容改变通知，我们可以利用内容观察者（ContentObserver）监听媒体数据库的变化，当数据库有变化时，获取最后插入的一条图片数据，如果该图片符合特定的规则，则认为被截屏了。
