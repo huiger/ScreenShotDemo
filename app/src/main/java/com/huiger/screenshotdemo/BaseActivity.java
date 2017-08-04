@@ -63,7 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     MyDialog ksDialog = MyDialog.getInstance()
                             .init(BaseActivity.this, R.layout.dialog_layout)
                             .setCancelButton("取消", null)
-                            .setPositiveButton("查看", new MyDialog.OnClickListener() {
+                            .setPositiveButton("生成新图片", new MyDialog.OnClickListener() {
                                 @Override
                                 public void OnClick(View view) {
                                     Bitmap screenShotBitmap = screenShotListenManager.createScreenShotBitmap(mContext, path);
