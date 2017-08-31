@@ -21,7 +21,7 @@ Android系统并没有提供截屏通知相关的API，需要我们自己利用�
 ## 代码描述
 
 ### 监听截屏
-```
+```java
 public class ScreenShotListenManager {
     private static final String TAG = "ScreenShotListenManager";
 
@@ -414,7 +414,7 @@ public class ScreenShotListenManager {
 
 ### 全局使用
 我们需求是要在APP中全局都能监听截屏操作，所以，我们只需要在BaseActivity中进行监听就可以了。
-```
+```java
 @Override
 protected void onResume() {
     super.onResume();
