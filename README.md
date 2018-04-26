@@ -1,7 +1,7 @@
 # ScreenShotDemo
 
 Android截屏功能是一个常用的功能，可以方便的用来分享或者发送给好友，本文介绍了如何实现app内截屏监控功能，当发现用户在我们的app内进行了截屏操作时，进行对图片的二次操作，例如添加二维码，公司logo等一系列***。
-## [项目地址](https://github.com/huiger/ScreenShotDemo)
+
 
 ## 测试截图：
 ![image](./img/ScreenShot.gif)
@@ -483,4 +483,4 @@ private void stopScreenShotListen() {
 
 至此APP内监听截屏操作就完成了，我们需要在baseActivity中执行监听并执行相应操作，不需要写更多代码。
 
-## [项目地址](https://github.com/huiger/ScreenShotDemo)
+
