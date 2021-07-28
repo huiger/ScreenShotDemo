@@ -484,3 +484,4 @@ private void stopScreenShotListen() {
 至此APP内监听截屏操作就完成了，我们需要在baseActivity中执行监听并执行相应操作，不需要写更多代码。
 
 
+- [参考来源](https://xiets.blog.csdn.net/article/details/52692163)
