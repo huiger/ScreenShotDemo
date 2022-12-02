@@ -1,5 +1,6 @@
 package com.huiger.screenshotdemo;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -125,16 +127,31 @@ public class ScreenShotListenManager {
         mExternalObserver = new MediaContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mUiHandler);
 
         // 注册内容观察者
-        mContext.getContentResolver().registerContentObserver(
-                MediaStore.Images.Media.INTERNAL_CONTENT_URI,
-                false,
-                mInternalObserver
-        );
-        mContext.getContentResolver().registerContentObserver(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                false,
-                mExternalObserver
-        );
+        if (Build.VERSION.SDK_INT < 29) { //Android 9及以下版本,否则不会回调onChange()
+            // 注册内容观察者
+            mContext.getContentResolver().registerContentObserver(
+                    MediaStore.Images.Media.INTERNAL_CONTENT_URI,
+                    false,
+                    mInternalObserver
+            );
+            mContext.getContentResolver().registerContentObserver(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    false,
+                    mExternalObserver
+            );
+        } else { //Android 10，11以上版本
+            // 注册内容观察者
+            mContext.getContentResolver().registerContentObserver(
+                    MediaStore.Images.Media.INTERNAL_CONTENT_URI,
+                    true,
+                    mInternalObserver
+            );
+            mContext.getContentResolver().registerContentObserver(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    true,
+                    mExternalObserver
+            );
+        }
     }
 
     /**
@@ -176,13 +193,26 @@ public class ScreenShotListenManager {
         Cursor cursor = null;
         try {
             // 数据改变时查询数据库中最后加入的一条数据
-            cursor = mContext.getContentResolver().query(
-                    contentUri,
-                    Build.VERSION.SDK_INT < 16 ? MEDIA_PROJECTIONS : MEDIA_PROJECTIONS_API_16,
-                    null,
-                    null,
-                    MediaStore.Images.ImageColumns.DATE_ADDED + " desc limit 1"
-            );
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Bundle bundle = new Bundle();
+                bundle.putStringArray(ContentResolver.QUERY_ARG_SORT_COLUMNS, new String[]{MediaStore.Images.Media.DATE_ADDED});
+                bundle.putInt(ContentResolver.QUERY_ARG_SORT_DIRECTION, ContentResolver.QUERY_SORT_DIRECTION_DESCENDING);
+                bundle.putInt(ContentResolver.QUERY_ARG_LIMIT, 1);
+
+                cursor = mContext.getContentResolver().query(
+                        contentUri,
+                        Build.VERSION.SDK_INT < 16 ? MEDIA_PROJECTIONS : MEDIA_PROJECTIONS_API_16,
+                        bundle, null
+                );
+            } else {
+                cursor = mContext.getContentResolver().query(
+                        contentUri,
+                        Build.VERSION.SDK_INT < 16 ? MEDIA_PROJECTIONS : MEDIA_PROJECTIONS_API_16,
+                        null,
+                        null,
+                        MediaStore.Images.ImageColumns.DATE_ADDED + " desc limit 1"
+                );
+            }
 
             if (cursor == null) {
                 Log.e(TAG, "Deviant logic.");
